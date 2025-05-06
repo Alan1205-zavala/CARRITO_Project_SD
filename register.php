@@ -1,5 +1,7 @@
 <?php
-require_once 'funciones.php';
+require_once __DIR__ . '/funciones.php';
+require_once __DIR__ . '/api/models/ClienteModel.php';
+require_once __DIR__ . '/api/config/database.php';
 
 if (usuarioLogueado()) {
     redirect('index.php');
@@ -23,8 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data['apellido'],
             $data['email'],
             $data['password'],
-            $data['direccion'],
-            $data['telefono']
+            $data['direccion'] ?? null,
+            $data['telefono'] ?? null
         );
 
         $_SESSION['user'] = [
@@ -34,7 +36,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'email' => $data['email']
         ];
 
-        redirect('index.php');
+        header('Location: index.php');
+        exit;
     } catch (Exception $e) {
         $error = $e->getMessage();
     }
