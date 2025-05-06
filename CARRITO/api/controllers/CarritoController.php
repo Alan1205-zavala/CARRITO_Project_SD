@@ -35,17 +35,45 @@ class CarritoController
 
     public function checkout($id_cliente, $payment_data)
     {
-        // Validar datos de pago
-        if (empty($payment_data['id_transaccion'])) {
-            throw new Exception('Datos de pago incompletos');
+        try {
+            $this->db->beginTransaction();
+
+            // Validar datos de pago
+            if (empty($payment_data['id_transaccion']) || empty($payment_data['amount'])) {
+                throw new Exception('Datos de pago incompletos');
+            }
+
+            $cart = $this->model->getActiveCart($id_cliente);
+
+            if ($cart['items_count'] === 0) {
+                throw new Exception('El carrito está vacío');
+            }
+
+            // Verificar que el monto coincida
+            if (abs($cart['total'] - $payment_data['amount']) > 0.01) {
+                throw new Exception('El monto no coincide con el carrito');
+            }
+
+            // Registrar la venta
+            $query = "INSERT INTO ventas 
+                     (id_cliente, total, estado_pago, id_transaccion_paypal, fecha_venta) 
+                     VALUES (?, ?, 'completado', ?, NOW())";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([
+                $id_cliente,
+                $cart['total'],
+                $payment_data['id_transaccion']
+            ]);
+
+            $this->db->commit();
+
+            return [
+                'success' => true,
+                'id_transaccion' => $payment_data['id_transaccion']
+            ];
+        } catch (Exception $e) {
+            $this->db->rollBack();
+            throw $e;
         }
-
-        $result = $this->model->processCheckout($id_cliente, $payment_data);
-
-        if ($result['success']) {
-            // Aquí podrías enviar un correo de confirmación, etc.
-        }
-
-        return $result;
     }
 }

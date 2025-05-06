@@ -3,7 +3,6 @@
 namespace api\models;
 
 use PDO;
-use PDOException;
 use Exception;
 
 class ClienteModel
@@ -15,25 +14,12 @@ class ClienteModel
         $this->db = $db;
     }
 
-    /**
-     * Registra un nuevo cliente en el sistema
-     * @param string $nombre
-     * @param string $apellido
-     * @param string $email
-     * @param string $password
-     * @param string|null $direccion
-     * @param string|null $telefono
-     * @return array
-     * @throws Exception
-     */
     public function create($nombre, $apellido, $email, $password, $direccion = null, $telefono = null)
     {
-        // Validación básica
         if (empty($email) || empty($password)) {
             throw new Exception('Email y contraseña son requeridos');
         }
 
-        // Verificar si el email ya existe
         $query = "SELECT id_cliente FROM clientes WHERE email = ?";
         $stmt = $this->db->prepare($query);
         $stmt->execute([$email]);
@@ -42,10 +28,8 @@ class ClienteModel
             throw new Exception('El email ya está registrado');
         }
 
-        // Hash de la contraseña
         $passwordHash = password_hash($password, PASSWORD_BCRYPT);
 
-        // Insertar nuevo cliente
         $query = "INSERT INTO clientes 
                  (nombre, apellido, email, password, direccion, telefono, fecha_registro) 
                  VALUES (?, ?, ?, ?, ?, ?, NOW())";
@@ -72,7 +56,6 @@ class ClienteModel
             'email' => $email
         ];
     }
-
     /**
      * Autentica un cliente
      * @param string $email

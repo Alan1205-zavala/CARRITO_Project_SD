@@ -1,7 +1,9 @@
 <?php
-require_once __DIR__ . '../funciones.php';
+require_once __DIR__ . '/funciones.php';
 
-// Verificar si el usuario ya está logueado
+// Cargar explícitamente el modelo si es necesario
+require_once __DIR__ . '/CARRITO/api/models/ClienteModel.php';
+
 if (usuarioLogueado()) {
     header('Location: index.php');
     exit;
@@ -11,7 +13,7 @@ if (usuarioLogueado()) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $db = conectarDB();
-        $clienteModel = new ClienteModel($db);
+        $clienteModel = new api\models\ClienteModel($db); // Usar namespace completo
 
         $result = $clienteModel->create(
             $_POST['nombre'],

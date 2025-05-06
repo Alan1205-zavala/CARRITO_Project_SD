@@ -1,4 +1,10 @@
 <?php
+
+namespace api\controllers;
+
+use api\models\ClienteModel;
+use Exception;
+
 class AuthController
 {
     private $db;

@@ -2,29 +2,32 @@
 session_start();
 
 // Configuración
-define('BASE_URL', 'http://localhost/CARRITO_Project/CARRITO_Project_SD-1/');
+define('BASE_PATH', __DIR__);
+define('BASE_URL', 'http://localhost/proyecto/');
 define('PAYPAL_CLIENT_ID', 'TU_CLIENT_ID_PAYPAL_AQUI');
+define('PAYPAL_SANDBOX', true); // Cambiar a false para producción
+define('PAYPAL_SECRET', 'TU_SECRET_SANDBOX_AQUI');
 
 // Autoloader mejorado
 spl_autoload_register(function ($class) {
-    $prefix = 'api\\';
-    $base_dir = __DIR__ . '/api/';
+    $prefixes = [
+        'api\\' => __DIR__ . '/api/',
+        '' => __DIR__ . '/api/' // Para clases en el root como Database
+    ];
 
-    // Verifica si la clase usa el prefijo del namespace
-    $len = strlen($prefix);
-    if (strncmp($prefix, $class, $len) !== 0) {
-        return;
-    }
+    foreach ($prefixes as $prefix => $base_dir) {
+        $len = strlen($prefix);
+        if (strncmp($prefix, $class, $len) !== 0) {
+            continue;
+        }
 
-    // Obtiene el nombre relativo de la clase
-    $relative_class = substr($class, $len);
+        $relative_class = substr($class, $len);
+        $file = $base_dir . str_replace('\\', '/', $relative_class) . '.php';
 
-    // Reemplaza los namespace separators con directory separators
-    $file = $base_dir . str_replace('\\', '/', $relative_class) . '.php';
-
-    // Si el archivo existe, lo requiere
-    if (file_exists($file)) {
-        require $file;
+        if (file_exists($file)) {
+            require $file;
+            return;
+        }
     }
 });
 

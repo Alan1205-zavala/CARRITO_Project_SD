@@ -1,26 +1,25 @@
 <?php
-// Configuración inicial
 require_once __DIR__ . '/funciones.php';
 
-// Cargar modelos necesarios
+// Cargar explícitamente Database si es necesario
+require_once __DIR__ . '/CARRITO/api/config/database.php';
 require_once __DIR__ . '/CARRITO/api/models/ProductoModel.php';
-require_once __DIR__ . '/CARRITO/api/models/CarritoModel.php';
-require_once __DIR__ . '/CARRITO/api/models/ClienteModel.php';
 
-// Verificar autenticación
 if (!usuarioLogueado()) {
     header('Location: login.php');
     exit;
 }
 
-// Conexión a la base de datos
 try {
-    $db = (new Database())->getConnection();
+    $database = new Database();
+    $db = $database->getConnection();
+
     $productoModel = new ProductoModel($db);
     $productos = $productoModel->getAll();
 } catch (Exception $e) {
     die("Error al conectar con la base de datos: " . $e->getMessage());
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -30,7 +29,8 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tienda Online</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://www.paypal.com/sdk/js?client-id=AfhPKqCWEVgoiqgJR_Uun9b0mYQsu05qKt8q_-SuXg0zjqPfk8Jr5CXYExmQcvc5El18Enw1VkkGcYC9&currency=MXN"></script>
+    <link href="assets/css/styles.css" rel="stylesheet">
+    <script src="https://www.paypal.com/sdk/js?client-id=Aa51CNnqtD9HMRe9qHOGXgXhUzu-rb-hiiYfkFrn9nFUOLYyBsDIm2uxnhQs89LK9PjfPbK8TwzNcpmY<?= getPayPalClientId() ?>&currency=MXN"></script>
 </head>
 
 <body>
@@ -42,7 +42,6 @@ try {
             <?php foreach ($productos as $producto): ?>
                 <div class="col-md-4 mb-4">
                     <div class="card h-100">
-
                         <div class="card-body">
                             <h5 class="card-title"><?= htmlspecialchars($producto['nombre']) ?></h5>
                             <p class="card-text"><?= htmlspecialchars($producto['descripcion'] ?? 'Sin descripción') ?></p>
@@ -62,7 +61,7 @@ try {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../CARRITO_Project_SD-1/CARRITO_Project/CARRITO_Project_SD/assets/js/main.js"></script>
+    <script src="assets/js/main.js"></script>
 </body>
 
 </html>

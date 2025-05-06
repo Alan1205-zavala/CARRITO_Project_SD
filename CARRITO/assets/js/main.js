@@ -1,31 +1,24 @@
 $(document).ready(function() {
-    // Obtener el ID de cliente de la variable de sesión PHP
     const userId = typeof USER_ID !== 'undefined' ? USER_ID : null;
     const isLoggedIn = typeof IS_LOGGED_IN !== 'undefined' ? IS_LOGGED_IN : false;
 
-    // Cargar contador del carrito al iniciar
     updateCartCount();
 
-    // Manejar clic en "Agregar al carrito"
     $(document).on('click', '.add-to-cart', function() {
         const id_producto = $(this).data('id');
-        console.log('Intentando agregar producto ID:', id_producto); // Debug
         
         $.post('api/carrito/add', {
             id_cliente: userId,
             id_producto: id_producto,
             cantidad: 1
         }, function(response) {
-            console.log('Respuesta:', response); // Debug
             updateCartCount();
             showToast('Producto agregado al carrito');
         }).fail(function(error) {
-            console.error('Error:', error); // Debug
             showToast(error.responseJSON?.message || 'Error al agregar al carrito', 'danger');
         });
     });
 
-    // Mostrar carrito
     $('#cartButton').click(function(e) {
         e.preventDefault();
         
@@ -102,64 +95,66 @@ $(document).ready(function() {
         $('#cartItems').html(html);
         $('#cartTotal').text('$' + (cart.total?.toFixed(2) || '0.00'));
         
-        // Configurar PayPal si hay items
-        if (cart.items && cart.items.length > 0) {
-            paypal.Buttons({
-                createOrder: function(data, actions) {
-                    return actions.order.create({
-                        purchase_units: [{
-                            amount: {
-                                value: cart.total.toFixed(2),
-                                currency_code: 'USD',
-                                breakdown: {
-                                    item_total: {
-                                        value: cart.total.toFixed(2),
-                                        currency_code: 'USD'
-                                    }
+    // Configurar PayPal
+    if (cart.items && cart.items.length > 0) {
+        paypal.Buttons({
+            style: {
+                layout: 'vertical',
+                color: 'blue',
+                shape: 'rect',
+                label: 'paypal'
+            },
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: cart.total.toFixed(2),
+                            currency_code: 'MXN',
+                            breakdown: {
+                                item_total: {
+                                    value: cart.total.toFixed(2),
+                                    currency_code: 'MXN'
                                 }
+                            }
+                        },
+                        items: cart.items.map(item => ({
+                            name: item.nombre,
+                            unit_amount: {
+                                value: item.precio_unitario.toFixed(2),
+                                currency_code: 'MXN'
                             },
-                            items: cart.items.map(item => ({
-                                name: item.nombre,
-                                unit_amount: {
-                                    value: item.precio_unitario.toFixed(2),
-                                    currency_code: 'USD'
-                                },
-                                quantity: item.cantidad.toString()
-                            }))
-                        }]
+                            quantity: item.cantidad.toString(),
+                            sku: item.id_producto.toString()
+                        }))
+                    }]
+                });
+            },
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    // Enviar datos al servidor
+                    $.post('api/carrito/checkout', {
+                        id_cliente: userId,
+                        payment_data: {
+                            id_transaccion: details.id,
+                            status: details.status,
+                            email: details.payer.email_address,
+                            amount: cart.total
+                        }
+                    }).done(function(response) {
+                        showToast('¡Pago completado con éxito!', 'success');
+                        $('#cartModal').modal('hide');
+                        updateCartCount();
+                    }).fail(function() {
+                        showToast('Error al registrar el pago', 'danger');
                     });
-                },
-                onApprove: function(data, actions) {
-                    return actions.order.capture().then(function(details) {
-                        $.post('api/carrito/checkout', {
-                            id_cliente: userId,
-                            payment_data: {
-                                id_transaccion: details.id,
-                                status: details.status,
-                                email: details.payer.email_address
-                            }
-                        }, function(response) {
-                            if (response.success) {
-                                showToast('Compra realizada con éxito!', 'success');
-                                $('#cartModal').modal('hide');
-                                updateCartCount();
-                            } else {
-                                showToast('Error al procesar el pago', 'danger');
-                            }
-                        }).fail(function() {
-                            showToast('Error al procesar el pago', 'danger');
-                        });
-                    });
-                },
-                onError: function(err) {
-                    console.error('Error en PayPal:', err);
-                    showToast('Error al procesar el pago con PayPal', 'danger');
-                }
-            }).render('#paypal-button-container');
-        } else {
-            $('#paypal-button-container').empty();
-        }
+                });
+            },
+            onError: function(err) {
+                showToast('Error en el proceso de pago: ' + err, 'danger');
+            }
+        }).render('#paypal-button-container');
     }
+}
 
     // Mostrar notificaciones toast
     function showToast(message, type = 'success') {
