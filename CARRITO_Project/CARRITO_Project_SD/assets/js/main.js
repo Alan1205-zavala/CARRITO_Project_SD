@@ -9,20 +9,18 @@ $(document).ready(function() {
     // Manejar clic en "Agregar al carrito"
     $(document).on('click', '.add-to-cart', function() {
         const id_producto = $(this).data('id');
-        
-        if (!isLoggedIn) {
-            showToast('Debes iniciar sesión para agregar productos al carrito', 'warning');
-            return;
-        }
+        console.log('Intentando agregar producto ID:', id_producto); // Debug
         
         $.post('api/carrito/add', {
             id_cliente: userId,
             id_producto: id_producto,
             cantidad: 1
         }, function(response) {
+            console.log('Respuesta:', response); // Debug
             updateCartCount();
             showToast('Producto agregado al carrito');
         }).fail(function(error) {
+            console.error('Error:', error); // Debug
             showToast(error.responseJSON?.message || 'Error al agregar al carrito', 'danger');
         });
     });
