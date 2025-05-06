@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/funciones.php';
-require_once __DIR__ . '/api/models/ClienteModel.php';
-require_once __DIR__ . '/api/config/database.php';
+require_once __DIR__ . '/CARRITO_Project/CARRITO_Project_SD/api/models/ClienteModel.php';
+require_once __DIR__ . '/CARRITO_Project/CARRITO_Project_SD/api/config/database.php';
 
 if (usuarioLogueado()) {
     redirect('index.php');

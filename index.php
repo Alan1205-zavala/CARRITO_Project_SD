@@ -1,14 +1,26 @@
 <?php
-require_once 'funciones.php';
+// Configuración inicial
+require_once __DIR__ . '/funciones.php';
 
+// Cargar modelos necesarios
+require_once __DIR__ . '/CARRITO_Project/CARRITO_Project_SD/api/models/ProductoModel.php';
+require_once __DIR__ . '/CARRITO_Project/CARRITO_Project_SD/api/models/ClienteModel.php';
+require_once __DIR__ . '/CARRITO_Project/CARRITO_Project_SD/api/config/database.php';
+
+// Verificar autenticación
 if (!usuarioLogueado()) {
     header('Location: login.php');
     exit;
 }
 
-$db = conectarDB();
-$productoModel = new ProductoModel($db);
-$productos = $productoModel->getAll();
+// Conexión a la base de datos
+try {
+    $db = (new Database())->getConnection();
+    $productoModel = new ProductoModel($db);
+    $productos = $productoModel->getAll();
+} catch (Exception $e) {
+    die("Error al conectar con la base de datos: " . $e->getMessage());
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
