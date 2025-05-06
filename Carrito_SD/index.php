@@ -13,48 +13,103 @@
 </head>
 <body>
 <header>
-  <div class="collapse text-bg-dark" id="navbarHeader">
+  <div class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
     <div class="container">
-      <div class="row">
-        <div class="col-sm-8 col-md-7 py-4">
-          <h4>About</h4>
-          <p class="text-body-secondary">
-            Add some information about the album below, the author, or any other background context.
-            Make it a few sentences long so folks can pick up some informative tidbits.
-            Then, link them off to some social networking sites or contact information.
-          </p>
-        </div>
-        <div class="col-sm-4 offset-md-1 py-4">
-          <h4>Contact</h4>
-          <ul class="list-unstyled">
-            <li><a href="#" class="text-white">Follow on X</a></li>
-            <li><a href="#" class="text-white">Like on Facebook</a></li>
-            <li><a href="#" class="text-white">Email me</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="navbar navbar-dark bg-dark shadow-sm">
-    <div class="container">
-      <a href="#" class="navbar-brand d-flex align-items-center">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
-             stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-             aria-hidden="true" class="me-2" viewBox="0 0 24 24">
-          <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-          <circle cx="12" cy="13" r="4"></circle>
-        </svg>
-        <strong>Album</strong>
+      <a href="#" class="navbar-brand">
+        <strong>Tienda Online SD</strong>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
               data-bs-target="#navbarHeader" aria-controls="navbarHeader"
               aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+
+        <div class="collapse navbar-collapse" id="navbarHeader">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+                <a href="#" class="nav-link active">Catalogo</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">Contacto</a>
+            </li>
+            </ul>
+            <a href="carrito.php" class="btn btn-primary">Iniciar Sesion</a>
     </div>
   </div>
 </header>
+
+<main>
+    <div class="container">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="col">
+          <div class="card w-100 shadow-sm">
+            <img src="" class="img-thumbnail" style="max-height: 300px">
+            <div class="card-body">
+              <h5 class="card-title">Zapatos color cafe</h5>
+              <p class="card-text">$ 599.00</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="#" class="btn btn-primary">Detalles</a>
+                </div>
+                <a href="#" class="btn btn-success">Agregar</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card w-100 shadow-sm">
+            <img src="https://i.ibb.co/hBWkrDH/principal.jpg" class="img-thumbnail" style="max-height: 300px">
+            <div class="card-body">
+              <h5 class="card-title">Laptop 15.6" con Windows 11</h5>
+              <p class="card-text">$ 12,000.00</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="#" class="btn btn-primary">Detalles</a>
+                </div>
+                <a href="#" class="btn btn-success">Agregar</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card w-100 shadow-sm">
+            <img src="https://i.ibb.co/0KShhpG/principal.jpg" class="img-thumbnail" style="max-height: 300px">
+            <div class="card-body">
+              <h5 class="card-title">Smartphone Negro 32gb Dual Sim 3gb Ram</h5>
+              <p class="card-text">$ 2,899.00</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="#" class="btn btn-primary">Detalles</a>
+                </div>
+                <a href="#" class="btn btn-success">Agregar</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer text-lg-start bg-primary bg-gradient mt-auto">
+    <div class="container text-md-start pt-2 pb-1">
+        <!-- Grid row -->
+        <div class="row mt-3">
+            <!-- Grid column -->
+            <div class="col-12 col-lg-3 col-sm-12 mb-2">
+                <!-- Content -->
+                <p class="text-white h3">
+                    Tienda Online CDP
+                </p>
+                <p class="mt-1 text-white">
+                    &copy; 2021 - 2025 Copyright: <a href="https://github.com/mroblesdev" target="_blank" class="text-white">MRoblesDev</a>
+                </p>
+            </div>
+            <!-- Grid column -->
+        </div>
+        <!-- Grid row -->
+    </div>
+</footer>
     
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" 
 integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" 
