@@ -184,4 +184,39 @@ $(document).ready(function() {
             toast.remove();
         });
     }
+
+    function renderCart(cart) {
+        let html = '';
+        
+        if (cart.items && cart.items.length > 0) {
+            cart.items.forEach(item => {
+                html += `
+                    <div class="card mb-2">
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6>${item.nombre}</h6>
+                                <p>Cantidad: ${item.cantidad}</p>
+                                <p>Precio unitario: $${item.precio_unitario.toFixed(2)}</p>
+                            </div>
+                            <div>
+                                <p>Total: $${(item.precio_unitario * item.cantidad).toFixed(2)}</p>
+                                <button class="btn btn-sm btn-outline-danger remove-item" 
+                                        data-id="${item.id_producto}">
+                                    Eliminar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        } else {
+            html = '<div class="alert alert-info">Tu carrito está vacío</div>';
+        }
+        
+        $('#cartItems').html(html);
+        $('#cartTotal').text('$' + (cart.total?.toFixed(2) || '0.00'));
+        
+        // Mostrar PayPal solo si hay items
+        $('#paypal-button-container').toggle(cart.items && cart.items.length > 0);
+    }
 });
