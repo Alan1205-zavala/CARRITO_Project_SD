@@ -30,8 +30,7 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tienda Online</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/css/styles.css" rel="stylesheet">
-    <script src="https://www.paypal.com/sdk/js?client-id=AfhPKqCWEVgoiqgJR_Uun9b0mYQsu05qKt8q_-SuXg0zjqPfk8Jr5CXYExmQcvc5El18Enw1VkkGcYC9<?= getPayPalClientId(); ?>&currency=USD"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AfhPKqCWEVgoiqgJR_Uun9b0mYQsu05qKt8q_-SuXg0zjqPfk8Jr5CXYExmQcvc5El18Enw1VkkGcYC9&currency=MXN"></script>
 </head>
 
 <body>
@@ -43,8 +42,7 @@ try {
             <?php foreach ($productos as $producto): ?>
                 <div class="col-md-4 mb-4">
                     <div class="card h-100">
-                        <img src="<?= htmlspecialchars($producto['imagen'] ?? 'https://via.placeholder.com/300') ?>"
-                            class="card-img-top" alt="<?= htmlspecialchars($producto['nombre']) ?>">
+
                         <div class="card-body">
                             <h5 class="card-title"><?= htmlspecialchars($producto['nombre']) ?></h5>
                             <p class="card-text"><?= htmlspecialchars($producto['descripcion'] ?? 'Sin descripción') ?></p>
@@ -64,7 +62,7 @@ try {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script src="../CARRITO_Project_SD-1/CARRITO_Project/CARRITO_Project_SD/assets/js/main.js"></script>
 </body>
 
 </html>
