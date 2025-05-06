@@ -1,0 +1,14 @@
+.toast {
+    z-index: 9999;
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: contain;
+    background-color: #f8f9fa;
+}
+
+#cartModal .modal-body {
+    max-height: 60vh;
+    overflow-y: auto;
+}
