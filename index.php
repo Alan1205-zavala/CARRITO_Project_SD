@@ -3,9 +3,9 @@
 require_once __DIR__ . '/funciones.php';
 
 // Cargar modelos necesarios
-require_once __DIR__ . '/CARRITO_Project/CARRITO_Project_SD/api/models/ProductoModel.php';
-require_once __DIR__ . '/CARRITO_Project/CARRITO_Project_SD/api/models/ClienteModel.php';
-require_once __DIR__ . '/CARRITO_Project/CARRITO_Project_SD/api/config/database.php';
+require_once __DIR__ . '/CARRITO/api/models/ProductoModel.php';
+require_once __DIR__ . '/CARRITO/api/models/CarritoModel.php';
+require_once __DIR__ . '/CARRITO/api/models/ClienteModel.php';
 
 // Verificar autenticación
 if (!usuarioLogueado()) {
